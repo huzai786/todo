@@ -1,0 +1,64 @@
+{% extends 'main.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+.alert {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0px);
+    transition: visibility 0s, opacity 250ms, transform 250ms;
+}
+.alert.hide {
+    position: relative;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: visibility 0s 250ms, opacity 250ms, transform 250ms;
+}
+
+</style>
+<script>
+    var m = document.getElementsByClassName("alert"); 
+    setTimeout(function(){
+    if (m && m.length) {
+        m[0].classList.add('hide');
+    }
+    }, 3000);
+</script>
+
+<form method="post" class="form-control">
+    {% csrf_token %}
+    <div class="row d-flex justify-content-center">
+        <p class="lead">
+            Login here:
+        </p>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="form-col">
+            <div class="form-group">
+                <label>Username</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" name="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>           
+            <p>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></p>
+                <div class="row-1">
+                    <button type="submit" class="btn btn-outline-primary">Login</button>                    
+                </div> 
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endblock content %}
+            </div>
+    </div>
+</form>
+

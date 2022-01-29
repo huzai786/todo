@@ -1,0 +1,97 @@
+{% extends 'main.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+    .alert {
+        position: relative;
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0px);
+        transition: visibility 0s, opacity 250ms, transform 250ms;
+    }
+    .alert.hide {
+        position: relative;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-10px);
+        transition: visibility 0s 250ms, opacity 250ms, transform 250ms;
+    }
+    
+    </style>
+    <script>
+        var m = document.getElementsByClassName("alert"); 
+        setTimeout(function(){
+        if (m && m.length) {
+            m[0].classList.add('hide');
+        }
+        }, 3000);
+    </script>
+<div class="row mt-5"></div>
+
+<div class="container border-top-0">
+<form method="post" action="{% url 'home' %}">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="col-7">
+            <label for="inputTask">Task:</label>
+            <input type="text" class="form-control" placeholder="Enter your task here:" name="task" id="inputTask">
+        </div>
+        <div class="col-3">
+            <label for="inputTime">Time:</label>
+            <input type="time" class="form-control" placeholder="Enter time:" name="time" id="inputTime">
+        </div>
+        <div class="col-2">
+            <label for="inputstatus">Status:</label>
+            <select id="inputStatus" name="status" class="form-control">
+            <option selected>Choose...</option>
+            <option>Completed</option>
+            <option>In Completed</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-outline-primary">Confirm</button>
+        </div>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+</form>
+</div>
+
+<div class="row mt-5"></div>
+<hr>
+{% for task in tasks %}
+<div class="container">
+    <div class="row">
+    <div class="col">
+        {{ task.name }}
+    </div>
+    <div class="col">
+        {{ task.task }}
+    </div>
+    <div class="col">
+        {{ task.time }}
+    </div>
+    <div class="col">
+        {{ task.status }}
+    </div>
+    <div class="col">
+        <a href="{% url 'delete_task' task.id %}" class="btn btn-warning">Delete</a>
+    </div>
+    <div class="col">
+        <a href="{% url 'edit_task' task.id %}" class="btn btn-info">Edit</a>
+    </div>
+    </div>
+</div>
+<hr>
+{% endfor %}
+{% endblock content %}
+
+
+

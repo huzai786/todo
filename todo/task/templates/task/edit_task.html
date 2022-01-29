@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form method="post" class="form-control" action="">
+    {% csrf_token %}
+    <p class="lead">
+        Edit your task:
+    </p>
+    {{ form | crispy }}
+    <input type="submit">
+</form>
+{% endblock content %}
